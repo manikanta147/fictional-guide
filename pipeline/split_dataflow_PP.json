@@ -16,10 +16,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "split_df",
+						"referenceName": "dataflow1",
 						"type": "DataFlowReference",
 						"parameters": {
-							"output_filename": {
+							"json_to_csv": {
 								"value": "'@{pipeline().parameters.output_filename1}'",
 								"type": "Expression"
 							}

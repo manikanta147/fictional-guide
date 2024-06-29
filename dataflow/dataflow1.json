@@ -1,0 +1,83 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Json1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"rejectedDataLinkedService": {
+						"referenceName": "AzureDataLakeStorage1",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [
+				{
+					"name": "flatten1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     json_to_csv as string",
+				"}",
+				"source(output(",
+				"          batters as (batter as (id as short, type as string)[]),",
+				"          id as short,",
+				"          name as string,",
+				"          ppu as double,",
+				"          topping as (id as short, type as string)[],",
+				"          type as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> source1",
+				"source1 foldDown(unrollMultiple(batters.batter,topping),",
+				"     mapColumn(",
+				"          id,",
+				"          type,",
+				"          name,",
+				"          ppu,",
+				"          {batter.id} = batters.batter.id,",
+				"          {batter.type} = batters.batter.type,",
+				"          {topping.id} = topping.id,",
+				"          {topping.nam} = topping.type",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          {S.No} as string,",
+				"          id as string,",
+				"          salary as string,",
+				"          Name1 as string,",
+				"          Name2 as string,",
+				"          Name3 as string,",
+				"          Name4 as string",
+				"     ),",
+				"     partitionFileNames:[($json_to_csv)],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}
