@@ -1,0 +1,48 @@
+{
+	"name": "groupby",
+	"properties": {
+		"type": "Flowlet",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "input1"
+				},
+				{
+					"name": "output1"
+				}
+			],
+			"scriptLines": [
+				"input(output(",
+				"          student_id as string,",
+				"          name as string,",
+				"          city as string,",
+				"          fees as string",
+				"     ),",
+				"     order: 0,",
+				"     allowSchemaDrift: true) ~> input1",
+				"input1 aggregate(groupBy(student_id,",
+				"          name,",
+				"          city,",
+				"          fees),",
+				"     count = count()) ~> aggregate1",
+				"aggregate1 select(mapColumn(",
+				"          student_id,",
+				"          name,",
+				"          city,",
+				"          fees",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 output() ~> output1"
+			]
+		}
+	}
+}
