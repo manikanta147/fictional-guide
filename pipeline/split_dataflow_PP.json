@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "flatten",
 						"type": "DataFlowReference",
 						"parameters": {
 							"json_to_csv": {
