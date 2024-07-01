@@ -1,5 +1,5 @@
 {
-	"name": "groupby",
+	"name": "groupby_flowlet",
 	"properties": {
 		"type": "Flowlet",
 		"typeProperties": {
