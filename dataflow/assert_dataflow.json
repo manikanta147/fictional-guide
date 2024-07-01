@@ -1,0 +1,146 @@
+{
+	"name": "assert_dataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "student_data",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "technology",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "output_param",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"rejectedDataLinkedService": {
+						"referenceName": "AzureDataLakeStorage1",
+						"type": "LinkedServiceReference"
+					}
+				},
+				{
+					"dataset": {
+						"referenceName": "output_param",
+						"type": "DatasetReference"
+					},
+					"name": "sink2",
+					"rejectedDataLinkedService": {
+						"referenceName": "AzureDataLakeStorage1",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "assert1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "select2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          student_id as integer,",
+				"          name as string,",
+				"          city as string,",
+				"          fees as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source(output(",
+				"          student_number as integer,",
+				"          course_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source2",
+				"assert1 derive(error_cols = isError()) ~> derivedColumn1",
+				"derivedColumn1 split(error_cols==false(),",
+				"     disjoint: false) ~> split1@(NonErrored, Errored)",
+				"source1, source2 assert(expectTrue(fees <=1000, false, 'assert1'),",
+				"     expectExists(student_id == student_number, false, 'assert2')) ~> assert1",
+				"split1@Errored select(mapColumn(",
+				"          student_id,",
+				"          name,",
+				"          city,",
+				"          fees,",
+				"          student_number,",
+				"          course_name",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"split1@NonErrored select(mapColumn(",
+				"          student_id,",
+				"          name,",
+				"          city,",
+				"          fees,",
+				"          student_number,",
+				"          course_name",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as string,",
+				"          type as string,",
+				"          name as string,",
+				"          ppu as string,",
+				"          {batter.id} as string,",
+				"          {batter.type} as string,",
+				"          {topping.id} as string,",
+				"          {topping.nam} as string",
+				"     ),",
+				"     partitionFileNames:['NonError.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as string,",
+				"          type as string,",
+				"          name as string,",
+				"          ppu as string,",
+				"          {batter.id} as string,",
+				"          {batter.type} as string,",
+				"          {topping.id} as string,",
+				"          {topping.nam} as string",
+				"     ),",
+				"     partitionFileNames:['errored.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink2"
+			]
+		}
+	}
+}
