@@ -1,0 +1,55 @@
+{
+	"name": "output_param",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "output"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "type",
+				"type": "String"
+			},
+			{
+				"name": "name",
+				"type": "String"
+			},
+			{
+				"name": "ppu",
+				"type": "String"
+			},
+			{
+				"name": "batter.id",
+				"type": "String"
+			},
+			{
+				"name": "batter.type",
+				"type": "String"
+			},
+			{
+				"name": "topping.id",
+				"type": "String"
+			},
+			{
+				"name": "topping.nam",
+				"type": "String"
+			}
+		]
+	}
+}
