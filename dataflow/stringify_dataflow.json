@@ -24,6 +24,9 @@
 			"transformations": [
 				{
 					"name": "stringify1"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -39,10 +42,14 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'arrayOfDocuments') ~> source1",
-				"source1 stringify(op1 = batters ? string,",
-				"          op2 = topping ? string,",
+				"source1 stringify(batters = batters ? string,",
+				"          topping = topping ? string,",
+				"          batter_sub = batters.batter ? string,",
 				"     format: 'json') ~> stringify1",
-				"stringify1 sink(allowSchemaDrift: true,",
+				"stringify1 derive(batters = toString(batters),",
+				"          topping = toString(topping),",
+				"          batter_sub = toString(batter_sub)) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          id as string,",
