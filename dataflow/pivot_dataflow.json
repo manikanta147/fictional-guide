@@ -1,5 +1,5 @@
 {
-	"name": "parse_dataflow",
+	"name": "pivot_dataflow",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
