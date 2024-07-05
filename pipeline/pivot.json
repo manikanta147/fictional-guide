@@ -1,5 +1,5 @@
 {
-	"name": "parse",
+	"name": "pivot",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "pivot_dataflow",
 						"type": "DataFlowReference"
 					},
 					"compute": {
