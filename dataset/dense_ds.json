@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText2",
+	"name": "dense_ds",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage1",
