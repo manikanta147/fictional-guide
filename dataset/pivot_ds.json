@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText3",
+	"name": "pivot_ds",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage1",
