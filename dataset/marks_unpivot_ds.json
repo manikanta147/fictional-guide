@@ -1,0 +1,60 @@
+{
+	"name": "marks_unpivot_ds",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "marks_unpivot.csv",
+				"fileSystem": "input"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "name",
+				"type": "String"
+			},
+			{
+				"name": "science",
+				"type": "String"
+			},
+			{
+				"name": "maths",
+				"type": "String"
+			},
+			{
+				"name": "chemistry",
+				"type": "String"
+			},
+			{
+				"name": "social",
+				"type": "String"
+			},
+			{
+				"name": "telugu",
+				"type": "String"
+			},
+			{
+				"name": "hindi",
+				"type": "String"
+			},
+			{
+				"name": "english",
+				"type": "String"
+			}
+		]
+	}
+}
