@@ -1,0 +1,53 @@
+{
+	"name": "append_variable",
+	"properties": {
+		"activities": [
+			{
+				"name": "Append variable1",
+				"type": "AppendVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "fileNames",
+					"value": "sales_india,sales_aus"
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Append variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "total_files",
+					"value": {
+						"value": "@variables('fileNames')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"fileNames": {
+				"type": "Array",
+				"defaultValue": [
+					"sales_uk"
+				]
+			},
+			"total_files": {
+				"type": "Array"
+			}
+		},
+		"annotations": []
+	}
+}
